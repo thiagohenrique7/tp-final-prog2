@@ -8,6 +8,7 @@ import model.Aluno;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -22,15 +23,21 @@ import model.Aluno;
 public class Alunos {
 
 //    private static final String ARQUIVO_ALUNOS = "src/main/java/app/data/alunos.txt";
-    private TreeSet<Aluno> alunos = null;
+    private ArrayList<Aluno> alunos = null;
     private File arquivo;
+    // singleton
+    private static Alunos instancia = new Alunos();
 
     public Alunos() {
-//        if (alunos == null) {
-//            alunos = new TreeSet<Aluno>();
-//        }
+        if (alunos == null) {
+            alunos = new ArrayList<Aluno>();
+        }
 //        arquivo = new File(ARQUIVO_ALUNOS);
 //        carregaAlunos();
+    }
+
+    public static Alunos getInstance() {
+        return instancia;
     }
 
     public void carregaAlunos() {
@@ -53,6 +60,7 @@ public class Alunos {
     }
 
     public boolean add(Aluno p) {
+        boolean add = this.alunos.add(p);
 //        boolean add = this.alunos.add(p);
 //        if (add) try {
 //            FileWriter w = new FileWriter(arquivo, true);
@@ -72,12 +80,39 @@ public class Alunos {
         this.alunos.addAll(ps);
     }
 
+    public void update(Aluno p) {
+
+    }
+
     public boolean contains(Aluno p) {
 
         return this.alunos.contains(p);
     }
 
-    public TreeSet<Aluno> getTreeSet() {
+    public ArrayList<Aluno> pesquisar(String pesquisa) {
+        ArrayList<Aluno> alunosFiltrados = new ArrayList<Aluno>();
+
+        for (Aluno aluno : alunos) {
+            if (aluno.getNome().contains(pesquisa)) {
+                alunosFiltrados.add(aluno);
+            }
+        }
+
+        return alunosFiltrados;
+
+    }
+
+    public Aluno getAluno(int index) {
+
+        return alunos.get(index);
+    }
+
+    public void removerAluno(int index) {
+        alunos.remove(index);
+
+    }
+
+    public ArrayList<Aluno> getTreeSet() {
         return alunos;
     }
 

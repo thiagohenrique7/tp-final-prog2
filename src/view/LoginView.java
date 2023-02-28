@@ -4,6 +4,8 @@
  */
 package app.view;
 
+import controller.PainelPrincipalController;
+
 /**
  *
  * @author mac
@@ -82,6 +84,7 @@ public class LoginView extends javax.swing.JFrame {
         String senha = inputSenha.getText();
         
         System.out.println(usuario);
+        PainelPrincipalController ps = new PainelPrincipalController();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

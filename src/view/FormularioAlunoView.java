@@ -6,7 +6,9 @@ package view;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import model.Aluno;
 
 /**
@@ -21,25 +23,35 @@ public class FormularioAlunoView extends javax.swing.JFrame {
     /**
      * Creates new form CadastrarAlunoView
      */
-    // inicia um novo formulario
     public FormularioAlunoView() {
         initComponents();
     }
 
-    // preenche formulario com os dados
-    public FormularioAlunoView(String nome, String dataNascimento, String email, String telefone) {
-        initComponents();
-        setDefaultComponentsValues(nome, dataNascimento, email, telefone);
+
+    public JButton getBtnCancelar() {
+        return BtnCancelar;
     }
 
-    private void setDefaultComponentsValues(String nome, String dataNascimento, String email, String telefone) {
-        TxtFieldNome.setText(nome);
-        TxtFieldDataNasc.setText(dataNascimento);
-        TxtFieldEmail.setText(email);
-        TxtFieldTelefone.setText(telefone);
-        // seta como edicao de dados
-        isEdit = true;
+    public JButton getBtnSalvar() {
+        return BtnSalvar;
     }
+
+    public JTextField getTxtFieldDataNasc() {
+        return TxtFieldDataNasc;
+    }
+
+    public JTextField getTxtFieldEmail() {
+        return TxtFieldEmail;
+    }
+
+    public JTextField getTxtFieldNome() {
+        return TxtFieldNome;
+    }
+
+    public JTextField getTxtFieldTelefone() {
+        return TxtFieldTelefone;
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -92,18 +104,8 @@ public class FormularioAlunoView extends javax.swing.JFrame {
         jLabel5.setText("Email");
 
         BtnSalvar.setText("Salvar");
-        BtnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnSalvarActionPerformed(evt);
-            }
-        });
 
         BtnCancelar.setText("Cancelar");
-        BtnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnCancelarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,52 +187,8 @@ public class FormularioAlunoView extends javax.swing.JFrame {
     private void TxtFieldTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFieldTelefoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtFieldTelefoneActionPerformed
-    // verifica se existem campos vazios ou no formato invalido
-    private boolean isValidFields() {
-        String nome = TxtFieldNome.getText();
-        String dataNasc = TxtFieldDataNasc.getText();
-        String email = TxtFieldEmail.getText();
-        String telefone = TxtFieldTelefone.getText();
+ 
 
-        if ("".equals(nome) || "".equals(dataNasc) || "".equals(telefone) || "".equals(email)) {
-            return false;
-        }
-
-        return true;
-
-    }
-
-    // valida se o email e valido apartir de de uma expressao regular
-    public static boolean isValidEmail(String email) {
-        String check = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + "\\@" + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" + "("
-                + "\\." + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+";
-        Pattern pattern = Pattern.compile(check);
-        Matcher matcher = pattern.matcher(email);
-
-        return matcher.matches();
-    }
-
-    private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
-        // TODO add your handling code here:
-        dispose();
-        PainelPrincipalView painel = new PainelPrincipalView();
-        painel.setVisible(true);
-    }//GEN-LAST:event_BtnCancelarActionPerformed
-
-    private void BtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSalvarActionPerformed
-        String nome = TxtFieldNome.getText();
-        String dataNasc = TxtFieldDataNasc.getText();
-        String email = TxtFieldEmail.getText();
-        String telefone = TxtFieldTelefone.getText();
-
-        if (!isValidFields()) {
-            JOptionPane.showMessageDialog(null, "Preencha os campos vazios!", "Alerta", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        // se for edicao de aluno faz update se nao cria um novo aluno.
-        Aluno aluno = new Aluno(nome, dataNasc, email, telefone);
-        System.out.println(aluno.toString());
-    }//GEN-LAST:event_BtnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
