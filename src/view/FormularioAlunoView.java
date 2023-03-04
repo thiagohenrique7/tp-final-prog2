@@ -4,6 +4,9 @@
  */
 package view;
 
+import DAO.AlunoDAO;
+import DTO.AlunoDTO;
+import controller.PainelPrincipalController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
@@ -104,6 +107,11 @@ public class FormularioAlunoView extends javax.swing.JFrame {
         jLabel5.setText("Email");
 
         BtnSalvar.setText("Salvar");
+        BtnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSalvarActionPerformed(evt);
+            }
+        });
 
         BtnCancelar.setText("Cancelar");
 
@@ -187,6 +195,27 @@ public class FormularioAlunoView extends javax.swing.JFrame {
     private void TxtFieldTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFieldTelefoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TxtFieldTelefoneActionPerformed
+
+    private void BtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSalvarActionPerformed
+        AlunoDTO objAlunoDTO = new AlunoDTO();
+        
+        objAlunoDTO.setNome(TxtFieldNome.getText());
+        objAlunoDTO.setData_nascimento(TxtFieldDataNasc.getText());
+        objAlunoDTO.setEmail(TxtFieldEmail.getText());
+        objAlunoDTO.setTelefone(TxtFieldTelefone.getText());
+        
+        AlunoDAO objAlunoDAO = new AlunoDAO();
+        
+        objAlunoDAO.cadastrarUsuario(objAlunoDTO);
+        
+         PainelPrincipalController ps = new PainelPrincipalController();
+         ps.RunPainelPrincipalController();
+         dispose();
+        
+        
+        
+        
+    }//GEN-LAST:event_BtnSalvarActionPerformed
  
 
 

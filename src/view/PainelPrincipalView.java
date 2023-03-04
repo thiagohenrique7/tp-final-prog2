@@ -4,6 +4,9 @@
  */
 package view;
 
+import DAO.AlunoDAO;
+import DTO.AlunoDTO;
+import controller.PainelPrincipalController;
 import javax.swing.JButton;
 import javax.swing.JList;
 
@@ -83,6 +86,11 @@ public class PainelPrincipalView extends javax.swing.JFrame {
         BtnEditar.setText("Editar Aluno");
 
         BtnRemover.setText("Remover Aluno");
+        BtnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRemoverActionPerformed(evt);
+            }
+        });
 
         BtnAdd.setText("Adicionar Aluno");
 
@@ -93,6 +101,11 @@ public class PainelPrincipalView extends javax.swing.JFrame {
         });
 
         BtnBuscar.setText("Buscar");
+        BtnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnBuscarActionPerformed(evt);
+            }
+        });
 
         RadioBtnOrdenar.setText("Ordedenar A-Z");
 
@@ -153,6 +166,23 @@ public class PainelPrincipalView extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_TxtFieldPesquisaActionPerformed
+
+    private void BtnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRemoverActionPerformed
+        AlunoDTO objAlunoDTO = new AlunoDTO();
+        
+        
+        AlunoDAO objAlunoDAO = new AlunoDAO();
+        
+        objAlunoDAO.cadastrarUsuario(objAlunoDTO);
+        
+         PainelPrincipalController ps = new PainelPrincipalController();
+         ps.RunPainelPrincipalController();
+         dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnRemoverActionPerformed
+
+    private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
+        // TODO add your handling   code here:
+    }//GEN-LAST:event_BtnBuscarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -16,6 +16,9 @@ import javax.swing.event.ListSelectionListener;
 import model.Aluno;
 import repository.Alunos;
 import view.PainelPrincipalView;
+import DAO.AlunoDAO;
+import DTO.AlunoDTO;
+import java.sql.ResultSet;
 
 /**
  *
@@ -24,22 +27,24 @@ import view.PainelPrincipalView;
 public class PainelPrincipalController {
 
     private PainelPrincipalView tela;
-    private Alunos alunos;
+    private  ArrayList <AlunoDTO> alunos;
 
     private int alunoSelecionado; // index aluno selecionado
 
-    public PainelPrincipalController() {
+    public void RunPainelPrincipalController() {
         tela = new PainelPrincipalView();
-        alunos = new Alunos().getInstance();
+        AlunoDAO objAlunoDAO = new AlunoDAO();
+        alunos = objAlunoDAO.getAlunos();
+        System.out.println(alunos);
         // adiciona eventos de callback
         addCallbacks();
 
         // carrega dados iniciais
-        ArrayList<Aluno> listaAlunos = new ArrayList<Aluno>(this.alunos.getTreeSet());
+      //ArrayList<Aluno> listaAlunos = new ArrayList<>(this.alunos.getTreeSet());
         // mostra na view
-        mostrarAlunos(listaAlunos);
+       mostrarAlunos(alunos);
+       tela.setVisible(true);
 
-        tela.setVisible(true);
     }
 
     private void addCallbacks() {
@@ -117,21 +122,22 @@ public class PainelPrincipalController {
         });
     }
 
-    private void mostrarAlunos(ArrayList<Aluno> listaAlunos) {
+    private void mostrarAlunos(ArrayList <AlunoDTO> listaAlunos) {
         String[] lista = new String[listaAlunos.size()];
 
         int contador = 0;
-        for (Aluno obj : listaAlunos) {
+        for (AlunoDTO obj : listaAlunos) {
             lista[contador] = obj.getNome();
             contador++;
         }
-
+        System.out.println("" + lista);
         JList<String> listaDeNomes = new JList<>(lista);
         listaDeNomes.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     alunoSelecionado = listaDeNomes.getSelectedIndex() + 1;
                     System.out.println("Item selecionado: " + alunoSelecionado);
+  
                 }
             }
         });
