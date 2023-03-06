@@ -5,7 +5,9 @@
 package controller;
 
 import DAO.AlunoDAO;
+import DAO.UsuarioDAO;
 import DTO.AlunoDTO;
+import DTO.UsuarioDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
@@ -28,7 +30,7 @@ public class FormularioAlunoController {
     public FormularioAlunoController() {
         tela = new FormularioAlunoView();
         addBtnCallbacks();
-        
+
         tela.setVisible(true);
     }
 
@@ -71,8 +73,21 @@ public class FormularioAlunoController {
                 AlunoDAO objAlunoDAO = new AlunoDAO();
                 if (isEdit) {
                     objAlunoDAO.updateAluno(aluno);
-                }else{
-                    objAlunoDAO.cadastrarAluno(aluno);
+                } else {
+                    // cria novo usuario e cadastra aluno
+                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+                    UsuarioDTO usuario = new UsuarioDTO();
+
+                    usuario.setUser(email);
+                   
+                    int id = objAlunoDAO.cadastrarAluno(aluno);
+                     // cria uma senha default para o usuario
+                    usuario.setPassword("123");
+                    usuario.setType("aluno");
+                    usuario.setUserId(id);
+                    usuarioDAO.cadastrarUsuario(usuario);
+                    
+
                 }
 
                 tela.dispose();

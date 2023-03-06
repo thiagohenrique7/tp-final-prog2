@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import DTO.AlunoDTO;
 import DTO.UsuarioDTO;
 import com.mysql.cj.xdevapi.PreparableStatement;
 import java.sql.Connection;
@@ -40,5 +41,28 @@ public class UsuarioDAO {
             return null;
         }
     }
+    
+    
+    public void cadastrarUsuario(UsuarioDTO objUsuario) {
+        conexao = new Conection().conectaBD();
+        try {
+            System.out.println("cadastrando");
+            String sql = "INSERT INTO users (user,password,type,user_id) VALUES(?,?,?,?)";
+            PreparedStatement pstm = conexao.prepareStatement(sql);
+
+            pstm.setString(1, objUsuario.getUser());
+            pstm.setString(2, objUsuario.getPassword());
+            pstm.setString(3, objUsuario.getType());
+            pstm.setInt(4, objUsuario.getUserId());
+
+            pstm.execute();
+            pstm.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "AlunoDAO: " + e.getMessage());
+        }
+    }
+    
+
 
 }

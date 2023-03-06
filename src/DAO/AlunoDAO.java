@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -21,24 +22,38 @@ public class AlunoDAO {
 
     Connection conexao;
 
-    public void cadastrarAluno(AlunoDTO objAlunoDto) {
+    public int cadastrarAluno(AlunoDTO objAlunoDto) {
         conexao = new Conection().conectaBD();
         try {
             System.out.println("cadastrando");
             String sql = "INSERT INTO alunos (nome,data_nascimento,email,telefone) VALUES(?,?,?,?)";
-            PreparedStatement pstm = conexao.prepareStatement(sql);
+            PreparedStatement pstm = conexao.prepareStatement(sql,
+                    Statement.RETURN_GENERATED_KEYS);
 
             pstm.setString(1, objAlunoDto.getNome());
             pstm.setString(2, objAlunoDto.getData_nascimento());
             pstm.setString(3, objAlunoDto.getEmail());
             pstm.setString(4, objAlunoDto.getTelefone());
 
-            pstm.execute();
-            pstm.close();
+            int affectedRows = pstm.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = pstm.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "AlunoDAO: " + e.getMessage());
         }
+
+        return 0;
     }
 
     public void updateAluno(AlunoDTO obj) {
@@ -78,6 +93,36 @@ public class AlunoDAO {
             JOptionPane.showMessageDialog(null, "AlunoDAO: " + e.getMessage());
         }
 
+    }
+
+    public AlunoDTO getAluno(int id) {
+        conexao = new Conection().conectaBD();
+        AlunoDTO aluno = new AlunoDTO();
+        try {
+            System.out.println("cadastrando");
+            String sql = "SELECT * FROM alunos WHERE id=?";
+            PreparedStatement pstm = conexao.prepareStatement(sql);
+
+            pstm.setInt(1, id);
+
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                //Display values
+                aluno.setId(rs.getInt("id"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setData_nascimento(rs.getString("data_nascimento"));
+                aluno.setEmail(rs.getString("email"));
+                aluno.setTelefone(rs.getString("telefone"));
+
+            }
+
+            return aluno;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "AlunoDAO: " + e.getMessage());
+        }
+        return aluno;
     }
 
     public ArrayList<AlunoDTO> getAlunos() {

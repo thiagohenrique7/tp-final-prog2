@@ -10,13 +10,31 @@ package DTO;
  * @author THIAGO
  */
 public class UsuarioDTO {
-    
+
     private int id;
     private String user;
     private String password;
+    private String type;
+    private int userId;
 
     public int getId() {
         return id;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setId(int id) {
@@ -39,8 +57,4 @@ public class UsuarioDTO {
         this.password = password;
     }
 
-   
-    
-    
-    
 }

@@ -2,12 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package app.view;
 
+import DAO.AlunoDAO;
 import controller.PainelPrincipalController;
 import DAO.Conection;
 import DAO.UsuarioDAO;
+import DTO.AlunoDTO;
 import DTO.UsuarioDTO;
+import controller.PainelAlunoController;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
@@ -119,14 +121,6 @@ public class LoginView extends javax.swing.JFrame {
         try {
             String usuario = inputUsuario.getText();
             String senha = inputSenha.getText();
-            if (isValidEmail(usuario)) {
-                System.out.println("email valid login como professor");
-                return;
-
-            }else{
-                System.out.println("Aluno");
-            }
-
             UsuarioDTO objUsuarioDTO = new UsuarioDTO();
 
             objUsuarioDTO.setUser(usuario);
@@ -134,12 +128,32 @@ public class LoginView extends javax.swing.JFrame {
 
             UsuarioDAO objUsuarioDAO = new UsuarioDAO();
             ResultSet resultado = objUsuarioDAO.authUser(objUsuarioDTO);
+
             System.out.println(resultado);
             if (resultado.next()) {
-                // abrindo tela principal
-                PainelPrincipalController ps = new PainelPrincipalController();
-                ps.RunPainelPrincipalController();
-                dispose();
+                String tipo = resultado.getString("type");
+
+                if ("professor".equals(tipo)) {
+                    // abrindo tela principal professor
+                    PainelPrincipalController ps = new PainelPrincipalController();
+                    ps.RunPainelPrincipalController();
+                    dispose();
+                }
+
+                if ("aluno".equals(tipo)) {
+                    AlunoDAO alunoDAO = new AlunoDAO();
+                    AlunoDTO aluno = new AlunoDTO();
+
+                    int matricula = resultado.getInt("user_id");
+
+                    aluno = alunoDAO.getAluno(matricula);
+                    System.out.println(aluno.getEmail());
+
+                    dispose();
+                    PainelAlunoController ps = new PainelAlunoController(aluno);
+
+                }
+
             } else {
                 JOptionPane.showMessageDialog(null, "USUÁRIO OU SENHA INVÁLIDA");
             }
