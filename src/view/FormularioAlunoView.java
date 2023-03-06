@@ -30,7 +30,6 @@ public class FormularioAlunoView extends javax.swing.JFrame {
         initComponents();
     }
 
-
     public JButton getBtnCancelar() {
         return BtnCancelar;
     }
@@ -54,7 +53,6 @@ public class FormularioAlunoView extends javax.swing.JFrame {
     public JTextField getTxtFieldTelefone() {
         return TxtFieldTelefone;
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -114,6 +112,11 @@ public class FormularioAlunoView extends javax.swing.JFrame {
         });
 
         BtnCancelar.setText("Cancelar");
+        BtnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,26 +201,28 @@ public class FormularioAlunoView extends javax.swing.JFrame {
 
     private void BtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSalvarActionPerformed
         AlunoDTO objAlunoDTO = new AlunoDTO();
-        
+
         objAlunoDTO.setNome(TxtFieldNome.getText());
         objAlunoDTO.setData_nascimento(TxtFieldDataNasc.getText());
         objAlunoDTO.setEmail(TxtFieldEmail.getText());
         objAlunoDTO.setTelefone(TxtFieldTelefone.getText());
-        
-        AlunoDAO objAlunoDAO = new AlunoDAO();
-        
-        objAlunoDAO.cadastrarUsuario(objAlunoDTO);
-        
-         PainelPrincipalController ps = new PainelPrincipalController();
-         ps.RunPainelPrincipalController();
-         dispose();
-        
-        
-        
-        
-    }//GEN-LAST:event_BtnSalvarActionPerformed
- 
 
+        AlunoDAO objAlunoDAO = new AlunoDAO();
+
+        objAlunoDAO.cadastrarUsuario(objAlunoDTO);
+
+        PainelPrincipalController ps = new PainelPrincipalController();
+        ps.RunPainelPrincipalController();
+        dispose();
+
+
+    }//GEN-LAST:event_BtnSalvarActionPerformed
+
+    private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
+        PainelPrincipalController ps = new PainelPrincipalController();
+        ps.RunPainelPrincipalController();
+        dispose();// TODO add your handling code here:
+    }//GEN-LAST:event_BtnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
