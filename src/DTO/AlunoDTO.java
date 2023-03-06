@@ -41,6 +41,11 @@ public class AlunoDTO {
         return email;
     }
 
+    @Override
+    public String toString() {
+        return "AlunoDTO{" + "id=" + id + ", nome=" + nome + ", data_nascimento=" + data_nascimento + ", email=" + email + ", telefone=" + telefone + '}';
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }

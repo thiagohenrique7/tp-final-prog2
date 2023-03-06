@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import model.Aluno;
-import repository.Alunos;
 import view.FormularioAlunoView;
 import view.PainelPrincipalView;
 
@@ -30,6 +28,7 @@ public class FormularioAlunoController {
     public FormularioAlunoController() {
         tela = new FormularioAlunoView();
         addBtnCallbacks();
+        
         tela.setVisible(true);
     }
 
@@ -72,6 +71,8 @@ public class FormularioAlunoController {
                 AlunoDAO objAlunoDAO = new AlunoDAO();
                 if (isEdit) {
                     objAlunoDAO.updateAluno(aluno);
+                }else{
+                    objAlunoDAO.cadastrarAluno(aluno);
                 }
 
                 tela.dispose();

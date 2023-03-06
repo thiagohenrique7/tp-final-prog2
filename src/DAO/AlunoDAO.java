@@ -21,7 +21,7 @@ public class AlunoDAO {
 
     Connection conexao;
 
-    public void cadastrarUsuario(AlunoDTO objAlunoDto) {
+    public void cadastrarAluno(AlunoDTO objAlunoDto) {
         conexao = new Conection().conectaBD();
         try {
             System.out.println("cadastrando");
@@ -54,8 +54,6 @@ public class AlunoDAO {
             pstm.setString(4, obj.getTelefone());
             pstm.setInt(5, obj.getId());
 
-            System.out.println(pstm);
-
             pstm.executeUpdate();
             pstm.close();
 
@@ -72,8 +70,6 @@ public class AlunoDAO {
             PreparedStatement pstm = conexao.prepareStatement(sql);
 
             pstm.setInt(1, obj.getId());
-
-            System.out.println(pstm);
 
             pstm.executeUpdate();
             pstm.close();
@@ -95,7 +91,6 @@ public class AlunoDAO {
 
             while (rs.next()) {
                 //Display values
-                System.out.println("ENTROU");
                 AlunoDTO aluno = new AlunoDTO();
                 aluno.setId(rs.getInt("id"));
                 aluno.setNome(rs.getString("nome"));
@@ -106,7 +101,6 @@ public class AlunoDAO {
                 alunos.add(aluno);
 
             }
-            System.out.println(alunos);
             return alunos;
 
         } catch (SQLException e) {

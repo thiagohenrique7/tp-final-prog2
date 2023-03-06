@@ -168,16 +168,7 @@ public class PainelPrincipalView extends javax.swing.JFrame {
     }//GEN-LAST:event_TxtFieldPesquisaActionPerformed
 
     private void BtnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRemoverActionPerformed
-        AlunoDTO objAlunoDTO = new AlunoDTO();
-        
-        
-        AlunoDAO objAlunoDAO = new AlunoDAO();
-        
-        objAlunoDAO.cadastrarUsuario(objAlunoDTO);
-        
-         PainelPrincipalController ps = new PainelPrincipalController();
-         ps.RunPainelPrincipalController();
-         dispose();        // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_BtnRemoverActionPerformed
 
     private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed

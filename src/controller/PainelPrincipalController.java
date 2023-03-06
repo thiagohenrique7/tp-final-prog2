@@ -13,8 +13,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import model.Aluno;
-import repository.Alunos;
 import view.PainelPrincipalView;
 import DAO.AlunoDAO;
 import DTO.AlunoDTO;
@@ -53,7 +51,8 @@ public class PainelPrincipalController {
 
             public void actionPerformed(ActionEvent e) {
                 // clona dados preservando original
-                ArrayList<AlunoDTO> listaAlunos = (ArrayList<AlunoDTO>) alunos.clone();
+                AlunoDAO objAlunoDAO = new AlunoDAO();
+                ArrayList<AlunoDTO> listaAlunos = objAlunoDAO.getAlunos();
                 boolean isChecked = tela.getRadioBtnOrdenar().isSelected();
 
                 // se estiver selecionado ele ordena em ordem alfabetica
@@ -82,7 +81,7 @@ public class PainelPrincipalController {
                 ArrayList<AlunoDTO> listaAlunos = new ArrayList<AlunoDTO>(pesquisar(pesquisa));
 
                 mostrarAlunos(listaAlunos);
-                ;
+
                 System.out.println("pesquisa feita");
             }
         });
@@ -132,6 +131,7 @@ public class PainelPrincipalController {
             public void actionPerformed(ActionEvent e) {
                 tela.dispose();
                 FormularioAlunoController janela = new FormularioAlunoController();
+
             }
         });
     }
