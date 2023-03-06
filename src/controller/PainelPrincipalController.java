@@ -16,6 +16,7 @@ import javax.swing.event.ListSelectionListener;
 import view.PainelPrincipalView;
 import DAO.AlunoDAO;
 import DTO.AlunoDTO;
+import DTO.ProfessorDTO;
 import java.sql.ResultSet;
 
 /**
@@ -26,22 +27,55 @@ public class PainelPrincipalController {
 
     private PainelPrincipalView tela;
     private ArrayList<AlunoDTO> alunos;
+    //id do professor
+    private int id = 0;
 
     private int alunoSelecionado; // index aluno selecionado
+    private ProfessorDTO professor;
 
-    public void RunPainelPrincipalController() {
+    public void RunPainelPrincipalController(ProfessorDTO professor) {
         tela = new PainelPrincipalView();
         AlunoDAO objAlunoDAO = new AlunoDAO();
         alunos = objAlunoDAO.getAlunos();
-        System.out.println(alunos);
+        ProfessorDTO professorDTO = new ProfessorDTO().getInstancia();
+
+        professorDTO.setNome(professor.getNome());
+        professorDTO.setMateria(professor.getMateria());
         // adiciona eventos de callback
         addCallbacks();
+        addHeaderData(professor);
 
         // carrega dados iniciais
         //ArrayList<Aluno> listaAlunos = new ArrayList<>(this.alunos.getTreeSet());
         // mostra na view
         mostrarAlunos(alunos);
         tela.setVisible(true);
+
+    }
+
+    public void RunPainelPrincipalController() {
+        ProfessorDTO professorDTO = new ProfessorDTO().getInstancia();
+
+        System.out.println(professorDTO.getNome());
+        tela = new PainelPrincipalView();
+        AlunoDAO objAlunoDAO = new AlunoDAO();
+        alunos = objAlunoDAO.getAlunos();
+        // adiciona eventos de callback
+        addCallbacks();
+
+        addHeaderData(professorDTO);
+
+        // carrega dados iniciais
+        //ArrayList<Aluno> listaAlunos = new ArrayList<>(this.alunos.getTreeSet());
+        // mostra na view
+        mostrarAlunos(alunos);
+        tela.setVisible(true);
+
+    }
+
+    private void addHeaderData(ProfessorDTO professor) {
+        tela.getTxtNome().setText(professor.getNome());
+        tela.getTxtMateria().setText(professor.getMateria());
 
     }
 

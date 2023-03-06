@@ -6,8 +6,10 @@
 import DAO.AlunoDAO;
 import controller.PainelPrincipalController;
 import DAO.Conection;
+import DAO.ProfessorDAO;
 import DAO.UsuarioDAO;
 import DTO.AlunoDTO;
+import DTO.ProfessorDTO;
 import DTO.UsuarioDTO;
 import controller.PainelAlunoController;
 import java.sql.ResultSet;
@@ -134,9 +136,15 @@ public class LoginView extends javax.swing.JFrame {
                 String tipo = resultado.getString("type");
 
                 if ("professor".equals(tipo)) {
+                    ProfessorDAO professorDAO = new ProfessorDAO();
+                    ProfessorDTO professor = new ProfessorDTO();
+
+                    int matricula = resultado.getInt("user_id");
+
+                    professor = professorDAO.getProfessor(matricula);
                     // abrindo tela principal professor
                     PainelPrincipalController ps = new PainelPrincipalController();
-                    ps.RunPainelPrincipalController();
+                    ps.RunPainelPrincipalController(professor);
                     dispose();
                 }
 
@@ -147,7 +155,6 @@ public class LoginView extends javax.swing.JFrame {
                     int matricula = resultado.getInt("user_id");
 
                     aluno = alunoDAO.getAluno(matricula);
-                    System.out.println(aluno.getEmail());
 
                     dispose();
                     PainelAlunoController ps = new PainelAlunoController(aluno);
