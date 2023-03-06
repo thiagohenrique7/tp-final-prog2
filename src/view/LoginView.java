@@ -10,6 +10,8 @@ import DAO.UsuarioDAO;
 import DTO.UsuarioDTO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import view.PainelPrincipalView;
 
@@ -117,6 +119,13 @@ public class LoginView extends javax.swing.JFrame {
         try {
             String usuario = inputUsuario.getText();
             String senha = inputSenha.getText();
+            if (isValidEmail(usuario)) {
+                System.out.println("email valid login como professor");
+                return;
+
+            }else{
+                System.out.println("Aluno");
+            }
 
             UsuarioDTO objUsuarioDTO = new UsuarioDTO();
 
@@ -131,18 +140,25 @@ public class LoginView extends javax.swing.JFrame {
                 PainelPrincipalController ps = new PainelPrincipalController();
                 ps.RunPainelPrincipalController();
                 dispose();
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "USUÁRIO OU SENHA INVÁLIDA");
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "FORMLOGIN: "+ e.getMessage());
-            
+            JOptionPane.showMessageDialog(null, "FORMLOGIN: " + e.getMessage());
+
         }
 
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public static boolean isValidEmail(String email) {
+        String check = "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + "\\@" + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" + "("
+                + "\\." + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+";
+        Pattern pattern = Pattern.compile(check);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
+    }
     private void inputUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputUsuarioActionPerformed
 
     }//GEN-LAST:event_inputUsuarioActionPerformed

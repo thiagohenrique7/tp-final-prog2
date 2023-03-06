@@ -16,7 +16,7 @@ import model.Aluno;
 
 /**
  *
- * @author mac
+ * @author Lucas Emanuel
  */
 public class FormularioAlunoView extends javax.swing.JFrame {
 

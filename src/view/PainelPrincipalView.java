@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author mac
+ * @author Lucas Emanuel
  */
 public class PainelPrincipalView extends javax.swing.JFrame {
 

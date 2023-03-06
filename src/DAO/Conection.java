@@ -16,7 +16,7 @@ public class Conection {
         Connection conexao = null;
         
         try {
-            String url = "jdbc:mysql://localhost:3306/tp_prog2?user=root&password=santoss710";
+            String url = "jdbc:mysql://localhost:3306/db?user=user&password=password";
             conexao = DriverManager.getConnection(url);
             
         } catch (SQLException e) {

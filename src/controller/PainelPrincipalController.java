@@ -22,12 +22,12 @@ import java.sql.ResultSet;
 
 /**
  *
- * @author mac
+ * @author Lucas Emanuel
  */
 public class PainelPrincipalController {
 
     private PainelPrincipalView tela;
-    private  ArrayList <AlunoDTO> alunos;
+    private ArrayList<AlunoDTO> alunos;
 
     private int alunoSelecionado; // index aluno selecionado
 
@@ -40,10 +40,10 @@ public class PainelPrincipalController {
         addCallbacks();
 
         // carrega dados iniciais
-      //ArrayList<Aluno> listaAlunos = new ArrayList<>(this.alunos.getTreeSet());
+        //ArrayList<Aluno> listaAlunos = new ArrayList<>(this.alunos.getTreeSet());
         // mostra na view
-       mostrarAlunos(alunos);
-       tela.setVisible(true);
+        mostrarAlunos(alunos);
+        tela.setVisible(true);
 
     }
 
@@ -52,17 +52,21 @@ public class PainelPrincipalController {
         tela.getRadioBtnOrdenar().addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Aluno> listaAlunos = alunos.getTreeSet();
+                // clona dados preservando original
+                ArrayList<AlunoDTO> listaAlunos = (ArrayList<AlunoDTO>) alunos.clone();
                 boolean isChecked = tela.getRadioBtnOrdenar().isSelected();
-                
+
                 // se estiver selecionado ele ordena em ordem alfabetica
                 if (isChecked) {
-                    Collections.sort(listaAlunos, new Comparator<Aluno>() {
+
+                    Collections.sort(listaAlunos, new Comparator<AlunoDTO>() {
                         @Override
-                        public int compare(Aluno o1, Aluno o2) {
+                        public int compare(AlunoDTO o1, AlunoDTO o2) {
                             return o1.getNome().toUpperCase().compareTo(o2.getNome().toUpperCase());
                         }
                     });
+                } else {
+
                 }
 
                 mostrarAlunos(listaAlunos);
@@ -75,7 +79,7 @@ public class PainelPrincipalController {
 
             public void actionPerformed(ActionEvent e) {
                 String pesquisa = tela.getTxtFieldPesquisa().getText();
-                ArrayList<Aluno> listaAlunos = new ArrayList<Aluno>(alunos.pesquisar(pesquisa));
+                ArrayList<AlunoDTO> listaAlunos = new ArrayList<AlunoDTO>(pesquisar(pesquisa));
 
                 mostrarAlunos(listaAlunos);
                 ;
@@ -88,13 +92,22 @@ public class PainelPrincipalController {
             public void actionPerformed(ActionEvent e) {
                 if (alunoSelecionado == 0) {
                     JOptionPane.showMessageDialog(null, "Por favor Selecione um Aluno!", "Alerta", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    // deleta
-              
-                    alunos.removerAluno(alunoSelecionado - 1);
-                    
-                    mostrarAlunos(alunos.getTreeSet());
+                    return;
                 }
+                int resposta = JOptionPane.showConfirmDialog(null, "tem certeza que deseja deletar aluno", "Alerta", JOptionPane.YES_NO_OPTION);
+
+                if (resposta == JOptionPane.YES_OPTION) {
+                    // deleta
+                    AlunoDTO aluno = alunos.get(alunoSelecionado - 1);
+                    AlunoDAO objAlunoDAO = new AlunoDAO();
+
+                    objAlunoDAO.deleteAluno(aluno);
+                    // pesquisa 
+                    alunos = objAlunoDAO.getAlunos();
+
+                    mostrarAlunos(alunos);
+                }
+
             }
         });
 
@@ -106,8 +119,9 @@ public class PainelPrincipalController {
                 } else {
                     // obtem o aluno selecionado e abre edicao de aluno
                     tela.dispose();
-                    Aluno aluno = alunos.getAluno(alunoSelecionado - 1);
-                    FormularioAlunoController form = new FormularioAlunoController(aluno.getNome(), aluno.getDataNascimento(), aluno.getEmail(), aluno.getTelefone());
+                    AlunoDTO aluno = alunos.get(alunoSelecionado - 1);
+
+                    FormularioAlunoController form = new FormularioAlunoController(aluno.getId(), aluno.getNome(), aluno.getData_nascimento(), aluno.getEmail(), aluno.getTelefone());
 
                 }
             }
@@ -122,7 +136,20 @@ public class PainelPrincipalController {
         });
     }
 
-    private void mostrarAlunos(ArrayList <AlunoDTO> listaAlunos) {
+    public ArrayList<AlunoDTO> pesquisar(String pesquisa) {
+        ArrayList<AlunoDTO> alunosFiltrados = new ArrayList<AlunoDTO>();
+
+        for (AlunoDTO aluno : alunos) {
+            if (aluno.getNome().contains(pesquisa)) {
+                alunosFiltrados.add(aluno);
+            }
+        }
+
+        return alunosFiltrados;
+
+    }
+
+    private void mostrarAlunos(ArrayList<AlunoDTO> listaAlunos) {
         String[] lista = new String[listaAlunos.size()];
 
         int contador = 0;
@@ -137,7 +164,7 @@ public class PainelPrincipalController {
                 if (!e.getValueIsAdjusting()) {
                     alunoSelecionado = listaDeNomes.getSelectedIndex() + 1;
                     System.out.println("Item selecionado: " + alunoSelecionado);
-  
+
                 }
             }
         });

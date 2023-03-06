@@ -4,6 +4,8 @@
  */
 package controller;
 
+import DAO.AlunoDAO;
+import DTO.AlunoDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
@@ -16,12 +18,13 @@ import view.PainelPrincipalView;
 
 /**
  *
- * @author mac
+ * @author Lucas Emanuel
  */
 public class FormularioAlunoController {
 
     private FormularioAlunoView tela;
     private boolean isEdit = false;
+    private int id = 0;
 
     //private Alunos alunos;
     public FormularioAlunoController() {
@@ -31,12 +34,14 @@ public class FormularioAlunoController {
     }
 
     // preenche formulario com os dados
-    public FormularioAlunoController(String nome, String dataNascimento, String email, String telefone) {
+    public FormularioAlunoController(int id, String nome, String dataNascimento, String email, String telefone) {
         tela = new FormularioAlunoView();
         // adiciona os valores iniciais
         setDefaultComponentsValues(nome, dataNascimento, email, telefone);
         addBtnCallbacks();
-
+        // seta como edicao de dados
+        this.isEdit = true;
+        this.id = id;
         tela.setVisible(true);
     }
 
@@ -57,11 +62,22 @@ public class FormularioAlunoController {
                     return;
                 }
                 // se for edicao de aluno faz update se nao cria um novo aluno
-                Alunos alunos = new Alunos().getInstance();
-                alunos.add(new Aluno(nome, dataNasc, email, telefone));
+                AlunoDTO aluno = new AlunoDTO();
+                aluno.setId(id);
+                aluno.setNome(nome);
+                aluno.setData_nascimento(dataNasc);
+                aluno.setEmail(email);
+                aluno.setTelefone(telefone);
+
+                AlunoDAO objAlunoDAO = new AlunoDAO();
+                if (isEdit) {
+                    objAlunoDAO.updateAluno(aluno);
+                }
 
                 tela.dispose();
                 PainelPrincipalController painel = new PainelPrincipalController();
+                painel.RunPainelPrincipalController();
+
             }
         });
 
@@ -71,6 +87,7 @@ public class FormularioAlunoController {
 
                 tela.dispose();
                 PainelPrincipalController painel = new PainelPrincipalController();
+                painel.RunPainelPrincipalController();
 
             }
         });
@@ -82,8 +99,6 @@ public class FormularioAlunoController {
         tela.getTxtFieldDataNasc().setText(dataNascimento);
         tela.getTxtFieldEmail().setText(email);
         tela.getTxtFieldTelefone().setText(telefone);
-        // seta como edicao de dados
-        isEdit = true;
     }
 
     // verifica se existem campos vazios ou no formato invalido
